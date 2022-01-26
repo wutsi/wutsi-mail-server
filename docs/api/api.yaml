@@ -1,0 +1,95 @@
+openapi: "3.0.0"
+info:
+  title: "Wutsi SMS API"
+  description: |
+    Wutsi Mail Server
+  version: "1.0.0"
+
+servers:
+  - url: https://wutsi-mail-server-test.herokuapp.com
+    description: Sandbox
+  - url: https://wutsi-mail-server-prod.herokuapp.com
+    description: Production
+
+paths:
+  /v1/mail/messages:
+    post:
+      operationId: "send-message"
+      description: Sends a Email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendMessageResponse'
+        409:
+          description: Mail delivery failed
+      tags:
+        - Message
+      security:
+        - api_key: [ 'mail-send' ]
+
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+
+  schemas:
+    SendMessageRequest:
+      type: object
+      properties:
+        recipient:
+          type: object
+          $ref: "#/components/schemas/Party"
+        content:
+          type: object
+          $ref: "#/components/schemas/Message"
+
+    SendMessageResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Message unique identifier
+
+    Party:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email
+        displayName:
+          type: string
+          description: Full name
+          nullable: true
+      required:
+        - email
+
+    Message:
+      type: object
+      properties:
+        subject:
+          type: string
+          description: Email
+        body:
+          type: string
+          description: Full name
+        language:
+          type: string
+          description: language
+          nullable: true
+        mimeType:
+          type: string
+          description: Mime type
+          nullable: true
+      required:
+        - subject

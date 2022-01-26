@@ -1,0 +1,16 @@
+spring:
+  mail: # We a using the free-tier Mailgun add-on in TEST environment
+    host: ${MAILGUN_SMTP_SERVER}
+    port: ${MAILGUN_SMTP_PORT}
+    username: ${MAILGUN_SMTP_LOGIN}
+    password: ${MAILGUN_SMTP_PASSWORD}
+    properties:
+      mail:
+        debug: true
+
+wutsi:
+  client-id: wutsi-mail
+  platform:
+    security:
+      type: jwt
+
