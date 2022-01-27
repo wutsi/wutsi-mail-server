@@ -33,8 +33,9 @@ public class SendMessageDelegate(
         message.setFrom(fromAddress)
         message.sender = fromAddress
         message.subject = request.content.subject
-        message.contentLanguage = request.content.language?.let { arrayOf(it) }
         message.setContent(request.content.body, request.content.mimeType)
+        if (request.content.language != null)
+            message.contentLanguage = arrayOf(request.content.language)
 
 //        val unsubscribeUrl = unsubscribeUrl(request, site)
 //        val unsubscribeEmail = unsubscribeEmail(site)
